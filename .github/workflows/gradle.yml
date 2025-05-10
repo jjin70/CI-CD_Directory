@@ -26,10 +26,15 @@ jobs:
       - name: Grant execute permission for gradlew
         working-directory: back
         run: chmod +x ./gradlew
-      
+
       - name: Build with Gradle  
         working-directory: back
-        run: ./gradlew build
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          set -a
+          . .env
+          set +a
+          ./gradlew build
   
       - name: Docker build & push to Hub
         working-directory: back
@@ -50,3 +55,4 @@ jobs:
             sudo docker rm -f $(sudo docker ps -qa) || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
             sudo docker run -d -p 8080:8080 --env-file .env ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            rm .env
