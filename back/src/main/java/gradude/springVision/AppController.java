@@ -13,6 +13,6 @@ public class AppController {
 
     @GetMapping("/teset")
     public String test() {
-        return "Success 👍";
+        return "Success 👍👍";
     }
 }
