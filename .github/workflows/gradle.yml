@@ -29,7 +29,12 @@ jobs:
 
       - name: Build with Gradle  
         working-directory: back
-        run: ./gradlew clean build -x test
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          set -a
+          . .env
+          set +a
+          ./gradlew build
   
       - name: Docker build & push to Hub
         working-directory: back
